@@ -2,6 +2,7 @@ class Item < ApplicationRecord
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to_active_hash :category, :condition, :shipping_fee, :prefecture, :shipping_days
   belongs_to :user
+  has_one_attached :image
 
   #商品名・説明バリデーション
   validates :name, :description, :price, presence: true
