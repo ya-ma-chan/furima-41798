@@ -1,0 +1,18 @@
+class Item < ApplicationRecord
+  extend ActiveHash::Associations::ActiveRecordExtensions
+  belongs_to_active_hash :category, :condition, :shipping_fee, :prefecture, :shipping_days
+  belongs_to :user
+
+  #商品名・説明バリデーション
+  validates :name, :description, :price, presence: true
+
+  #価格バリデーション
+  validates :price, presence: true, numericality: { 
+    only_integer: true,  # 半角数値のみ
+    greater_than_or_equal_to: 300,  # 最小値
+    less_than_or_equal_to: 9_999_999,  # 最大値
+  }
+
+  #アクティブハッシュバリデーション
+  validates :category_id, :condition_id, :shipping_fee_id, :prefecture_id, :shipping_days_id, numericality: { other_than: 1 , message: "can't be blank"}
+end
