@@ -7,6 +7,7 @@ class Item < ApplicationRecord
   belongs_to_active_hash :shipping_days
   belongs_to :user
   has_one_attached :image
+  has_one :purchase, dependent: :destroy
 
   # 画像・商品名・説明・価格バリデーション
   validates :image, :name, :description, :price, presence: true
