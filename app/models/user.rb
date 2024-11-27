@@ -4,9 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-    # 関連付け
-    has_many :items, dependent: :destroy
-    has_many :purchases, dependent: :destroy
+  # 関連付け
+  has_many :items, dependent: :destroy
+  has_many :purchases, dependent: :destroy
 
   # 基本的な必須項目
   validates :nickname, :birth_date, presence: true

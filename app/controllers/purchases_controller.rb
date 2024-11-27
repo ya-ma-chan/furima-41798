@@ -4,7 +4,7 @@ class PurchasesController < ApplicationController
   before_action :move_to_index, only: [:index]
 
   def index
-    gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
+    gon.public_key = ENV['PAYJP_PUBLIC_KEY']
     @purchase_address = PurchaseAddress.new
   end
 
@@ -15,32 +15,35 @@ class PurchasesController < ApplicationController
       @purchase_address.save
       redirect_to root_path
     else
-      gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
+      gon.public_key = ENV['PAYJP_PUBLIC_KEY']
       render :index, status: :unprocessable_entity
     end
-  end 
+  end
 
   private
+
   def set_item
     @item = Item.find(params[:item_id])
   end
 
   def move_to_index
-    if current_user == @item.user || @item.purchase.present?
-      redirect_to root_path
-    end
+    return unless current_user == @item.user || @item.purchase.present?
+
+    redirect_to root_path
   end
 
   def purchase_params
-    params.require(:purchase_address).permit(:postal_code, :prefecture_id, :city, :address, :building_name, :phone_number).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token])
+    params.require(:purchase_address).permit(:postal_code, :prefecture_id, :city, :address, :building_name, :phone_number).merge(
+      user_id: current_user.id, item_id: params[:item_id], token: params[:token]
+    )
   end
 
   def pay_item
-    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]  # 自身のPAY.JPテスト秘密鍵を記述しましょう
+    Payjp.api_key = ENV['PAYJP_SECRET_KEY'] # 自身のPAY.JPテスト秘密鍵を記述しましょう
     Payjp::Charge.create(
-      amount: @item.price,  # 商品の値段
-      card: purchase_params[:token],    # カードトークン
-      currency: 'jpy'                 # 通貨の種類（日本円）
+      amount: @item.price, # 商品の値段
+      card: purchase_params[:token], # カードトークン
+      currency: 'jpy' # 通貨の種類（日本円）
     )
   end
 end

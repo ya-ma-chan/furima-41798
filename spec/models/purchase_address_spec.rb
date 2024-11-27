@@ -1,4 +1,4 @@
-require 'rails_helper' 
+require 'rails_helper'
 
 RSpec.describe PurchaseAddress, type: :model do
   before do
@@ -29,7 +29,7 @@ RSpec.describe PurchaseAddress, type: :model do
       it 'postal_codeが半角のハイフンを含んだ正しい形式でないと保存できない' do
         @purchase_address.postal_code = '1234567'
         @purchase_address.valid?
-        expect(@purchase_address.errors.full_messages).to include("Postal code is invalid. Enter it as follows (e.g. 123-4567)")
+        expect(@purchase_address.errors.full_messages).to include('Postal code is invalid. Enter it as follows (e.g. 123-4567)')
       end
       it 'prefecture_idが「---」では保存できない' do
         @purchase_address.prefecture_id = 1
@@ -54,17 +54,17 @@ RSpec.describe PurchaseAddress, type: :model do
       it 'phone_numberが10桁未満では保存できない' do
         @purchase_address.phone_number = '123456789'
         @purchase_address.valid?
-        expect(@purchase_address.errors.full_messages).to include("Phone number is too short")
+        expect(@purchase_address.errors.full_messages).to include('Phone number is too short')
       end
       it 'phone_numberが全角だと保存できない' do
         @purchase_address.phone_number = '０９０１２３４５６７８'
         @purchase_address.valid?
-        expect(@purchase_address.errors.full_messages).to include("Phone number is invalid. Input only number")
+        expect(@purchase_address.errors.full_messages).to include('Phone number is invalid. Input only number')
       end
       it 'phone_numberが数字以外を含んでいると保存できない' do
         @purchase_address.phone_number = '090-1234-5678'
         @purchase_address.valid?
-        expect(@purchase_address.errors.full_messages).to include("Phone number is invalid. Input only number")
+        expect(@purchase_address.errors.full_messages).to include('Phone number is invalid. Input only number')
       end
       it 'userが紐付いていないと保存できない' do
         @purchase_address.user_id = nil
@@ -76,7 +76,7 @@ RSpec.describe PurchaseAddress, type: :model do
         @purchase_address.valid?
         expect(@purchase_address.errors.full_messages).to include("Item can't be blank")
       end
-      it "tokenが空では登録できない" do
+      it 'tokenが空では登録できない' do
         @purchase_address.token = nil
         @purchase_address.valid?
         expect(@purchase_address.errors.full_messages).to include("Token can't be blank")
