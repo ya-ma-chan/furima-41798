@@ -13,7 +13,7 @@ class PurchaseAddress
     validates :user_id, :item_id, :city, :address, :token
     # 電話番号
     validates :phone_number,
-              length: { minimum: 10, message: 'is too short' },
+              length: { in: 10..11, message: 'is too short' },
               format: { with: /\A\d+\z/, message: 'is invalid. Input only number' }
   end
 

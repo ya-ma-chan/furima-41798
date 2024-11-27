@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe PurchaseAddress, type: :model do
   before do
-    @purchase_address = FactoryBot.build(:purchase_address, user_id: 1, item_id: 1)
+    @user = FactoryBot.create(:user)
+    @item = FactoryBot.create(:item)
+    @purchase_address = FactoryBot.build(:purchase_address,user_id: @user.id, item_id: @item.id)
+    sleep 0.1
   end
 
   describe '商品購入機能' do
@@ -51,8 +54,13 @@ RSpec.describe PurchaseAddress, type: :model do
         @purchase_address.valid?
         expect(@purchase_address.errors.full_messages).to include("Phone number can't be blank")
       end
-      it 'phone_numberが10桁未満では保存できない' do
+      it 'phone_numberが9桁以下では登録できないこと' do
         @purchase_address.phone_number = '123456789'
+        @purchase_address.valid?
+        expect(@purchase_address.errors.full_messages).to include('Phone number is too short')
+      end
+      it 'phone_numberが12桁以上では登録できないこと' do
+        @purchase_address.phone_number = '123456789123'
         @purchase_address.valid?
         expect(@purchase_address.errors.full_messages).to include('Phone number is too short')
       end
