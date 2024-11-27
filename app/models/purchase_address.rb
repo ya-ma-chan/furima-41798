@@ -1,6 +1,6 @@
 class PurchaseAddress
   include ActiveModel::Model
-  attr_accessor :user_id, :item_id, :postal_code, :prefecture_id, :city, :address, :building_name, :phone_number
+  attr_accessor :user_id, :item_id, :postal_code, :prefecture_id, :city, :address, :building_name, :phone_number, :token
 
   #バリデーション
   with_options presence: true do
@@ -10,10 +10,11 @@ class PurchaseAddress
     # アクティブハッシュ
     validates :prefecture_id, numericality: { other_than: 1, message: "can't be blank" }
     # ユーザーID・商品ID・市区町村・番地
-    validates :user_id, :item_id ,:city, :address
-    # 電話番号
-    validates :phone_number, length: { minimum: 10, message: 'is too short' }
-    validates :phone_number, format: { with: /\A\d+\z/, message: 'is invalid. Input only number' }
+    validates :user_id, :item_id ,:city, :address, :token
+      # 電話番号
+    validates :phone_number,
+              length: { minimum: 10, message: 'is too short' },
+              format: { with: /\A\d+\z/, message: 'is invalid. Input only number' }
   end
 
   def save
